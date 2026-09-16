@@ -23,7 +23,7 @@ The team uses a custom sensor driver and the purchased ESP32-S3 hardware. The pr
 
 ## Communication
 
-- Use Slack for daily team communication and advisor messages.
+- Use email/messages group for daily team communication and advisor messages.
 - Use repository issues and pull requests for formal work records.
 - Reply to normal messages within 24 hours on weekdays.
 - Mark an urgent message clearly and notify all affected members.
@@ -75,18 +75,22 @@ Each signature confirms acceptance of this contract.
 
 | Team member | Signature | Date |
 |---|---|---|
-| Jacob Cohen | ____________________ | __________ |
+| Jacob Cohen | JACOB COHEN | 2026-09-15 |
 | Sujal Choukse | ____________________ | __________ |
 | Yatharth Bajaj | ____________________ | __________ |
 
 ## Advisor Approval
 
-The team reports approval through Slack without requested changes. Attach the original Slack message or a screenshot to this contract for Canvas.
+The team reports approval through email without requested changes. Attach the original message or a screenshot to this contract for Canvas.
 
 If this file differs from the contract that the advisor reviewed, request new approval before submission.
 
 **Advisor:** Jeffrey Gundler  
 **Department:** Grid Automation, GE Vernova  
-**Approval evidence:** Original Slack message or screenshot  
+**Approval evidence:** Original message or screenshot  
 **Advisor signature, if used:** ____________________  
 **Date:** __________
+
+### Approval Screenshot
+
+![Screenshot](./approval-screenshot.png)
