@@ -44,7 +44,7 @@ The team uses a custom sensor driver and the purchased ESP32-S3 hardware. The pr
 - Review code before it enters the main branch.
 - Add tests for new behavior when the behavior can be tested.
 - Keep project documents current with the implemented design.
-- Track shared equipment purchases against the $1,000 budget.
+- Track shared equipment purchases against the $200 budget.
 - Split approved project costs among the three team members.
 
 ## Decisions
