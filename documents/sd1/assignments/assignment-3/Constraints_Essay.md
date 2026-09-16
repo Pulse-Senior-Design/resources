@@ -8,7 +8,7 @@
 ### Economic
 
 Economic constraints apply because the first release needs a Heltec WiFi LoRa 32 V4.3 board and one test sensor.  
-The team has a $1,000 budget, and the three members share all equipment costs.  
+The team has a $200 budget, and the three members share all equipment costs.  
 The team owns three ESP32-S3 boards, but only one board has LoRa, so the first prototype must reuse this hardware.
 
 ### Security
