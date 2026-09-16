@@ -11,7 +11,7 @@ The team introduced Pulse and confirmed Jeffrey Gundler as the advisor for both 
 
 ## Decisions
 
-- Focus the first release on farm water and environmental sensor data.
+- Focus the first release on farm, water, and environmental sensor data.
 - Use the three purchased ESP32-S3 boards for the first hardware tests.
 - Use the LoRa-capable ESP32-S3 as the first field device.
 - Start with one test sensor and a custom Pulse sensor driver.
