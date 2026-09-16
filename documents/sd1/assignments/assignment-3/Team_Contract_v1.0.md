@@ -76,8 +76,8 @@ Each signature confirms acceptance of this contract.
 | Team member | Signature | Date |
 |---|---|---|
 | Jacob Cohen | JACOB COHEN | 2026-09-15 |
-| Sujal Choukse | SUJAL CHOUKSE | 09-16-26 |
-| Yatharth Bajaj | YATHARTH BAJAJ | 09-16-2026|
+| Sujal Choukse | SUJAL CHOUKSE | 2026-09-16 |
+| Yatharth Bajaj | YATHARTH BAJAJ | 2026-09-16 |
 
 ## Advisor Approval
 
