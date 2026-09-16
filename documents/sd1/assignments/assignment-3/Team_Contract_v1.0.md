@@ -87,8 +87,7 @@ If this file differs from the contract that the advisor reviewed, request new ap
 
 **Advisor:** Jeffrey Gundler  
 **Department:** Grid Automation, GE Vernova  
-**Approval evidence:** Original message or screenshot  
-**Advisor signature, if used:** ____________________  
+**Approval evidence:** Original screenshot (below)
 **Date:** __________
 
 ### Approval Screenshot
