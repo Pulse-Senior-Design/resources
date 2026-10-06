@@ -44,7 +44,7 @@ def read_svg():
         elif tag == 'text':
             font = 'Helvetica-Bold' if a.get('font-weight') == 'bold' else 'Helvetica'
             drawing.add(String(float(a['x']), height-float(a['y']), el.text or '',
-                               fontName=font, fontSize=float(a['font-size']), fillColor=color))
+                             fontName=font, fontSize=float(a['font-size']), fillColor=color))
     return drawing
 
 
@@ -72,7 +72,7 @@ def inline(s):
     s = re.sub(r'`([^`]+)`', lambda m: put('<font name="Courier" size="8.2">'
                + escape(m[1]) + '</font>'), s)
     s = re.sub(r'\[([^\]]+)\]\((https?://[^)]+)\)',
-               lambda m: put(f'<link href="{escape(m[2], quote=True)}" color="#1b628c">'
+               lambda m: put(f'<link href="{escape(m[2], quote=True)}" color="#000000">'
                              + escape(m[1]) + '</link>'), s)
     s = escape(s)
     s = re.sub(r'\*\*([^*]+)\*\*', r'<b>\1</b>', s)
@@ -81,19 +81,19 @@ def inline(s):
     return s
 
 
-BODY = ParagraphStyle('body', fontName='Helvetica', fontSize=9.5, leading=12.5,
-                      textColor=HexColor('#223441'), spaceAfter=7)
-SMALL = ParagraphStyle('cell', parent=BODY, fontSize=8.5, leading=10.8, spaceAfter=0)
-HEAD = ParagraphStyle('headcell', parent=SMALL, fontName='Helvetica-Bold', textColor=white)
-TITLE = ParagraphStyle('title', parent=BODY, fontName='Helvetica-Bold', fontSize=24,
-                       leading=29, textColor=HexColor('#133650'), spaceAfter=11)
-H2 = ParagraphStyle('section', parent=BODY, fontName='Helvetica-Bold', fontSize=15,
-                    leading=19, textColor=HexColor('#133650'), spaceAfter=10, keepWithNext=True)
-H3 = ParagraphStyle('subsection', parent=BODY, fontName='Helvetica-Bold', fontSize=11,
-                    leading=15, textColor=HexColor('#24516e'), spaceBefore=7,
+BODY = ParagraphStyle('body', fontName='Times-Roman', fontSize=10, leading=12.5,
+                      textColor=HexColor('#000000'), spaceAfter=7)
+SMALL = ParagraphStyle('cell', parent=BODY, fontSize=9, leading=11, spaceAfter=0)
+HEAD = ParagraphStyle('headcell', parent=SMALL, fontName='Times-Bold')
+TITLE = ParagraphStyle('title', parent=BODY, fontName='Times-Bold', fontSize=14,
+                       leading=18, spaceAfter=10)
+H2 = ParagraphStyle('section', parent=BODY, fontName='Times-Bold', fontSize=12,
+                    leading=15, spaceAfter=9, keepWithNext=True)
+H3 = ParagraphStyle('subsection', parent=BODY, fontName='Times-Bold', fontSize=11,
+                    leading=14, spaceBefore=7,
                     spaceAfter=6, keepWithNext=True)
 CODE = ParagraphStyle('code', fontName='Courier', fontSize=8.4, leading=10.2,
-                      backColor=HexColor('#f0f4f7'), borderPadding=8, spaceAfter=12)
+                      spaceAfter=12)
 
 
 def table(rows):
@@ -114,15 +114,12 @@ def table(rows):
              for i, row in enumerate(rows)]
     t = Table(cells, colWidths=widths, repeatRows=1, hAlign='LEFT')
     t.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), HexColor('#24516e')),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [HexColor('#f0f5f8'), white]),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('LEFTPADDING', (0, 0), (-1, -1), 7),
         ('RIGHTPADDING', (0, 0), (-1, -1), 7),
         ('TOPPADDING', (0, 0), (-1, -1), 4.5),
         ('BOTTOMPADDING', (0, 0), (-1, -1), 4.5),
-        ('LINEBELOW', (0, 0), (-1, 0), 0.8, HexColor('#24516e')),
-        ('LINEBELOW', (0, 1), (-1, -1), 0.25, HexColor('#d4dfe6')),
+        ('GRID', (0, 0), (-1, -1), 0.4, HexColor('#000000')),
     ]))
     return t
 
@@ -192,16 +189,9 @@ class NumberedCanvas(Canvas):
         count = len(self.saved)
         for state in self.saved:
             self.__dict__.update(state)
-            self.setStrokeColor(HexColor('#d4dfe6'))
-            self.line(48, 752, 564, 752)
-            self.line(48, 37, 564, 37)
-            self.setFont('Helvetica-Bold', 8)
-            self.setFillColor(HexColor('#24516e'))
-            self.drawString(48, 763, 'PULSE  /  DESIGN D1')
-            self.setFont('Helvetica', 8)
-            self.drawRightString(564, 763, 'Node C3 + Hub C5')
-            self.drawString(48, 24, 'Assignment 6  |  October 6, 2026')
-            self.drawRightString(564, 24, f'{self._pageNumber} / {count}')
+            self.setFont('Times-Roman', 9)
+            self.setFillColor(HexColor('#000000'))
+            self.drawCentredString(306, 24, str(self._pageNumber))
             super().showPage()
         super().save()
 
