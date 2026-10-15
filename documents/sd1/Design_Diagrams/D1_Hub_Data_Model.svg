@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="720" height="613.1612903225806" preserveAspectRatio="xMinYMin meet" viewBox="0 0 720 613" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="720" height="613.1612903225806"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-613)" style="clip-path: url(#clip)">
+		<g transform="">
+			<text x="24" y="588.1612903225806" style="font-family: Helvetica-Bold; font-size: 17px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1176) scale(1,-1)">Pulse | Figure 1. Hub data model</text>
+			<text x="24" y="566.1612903225806" style="font-family: Helvetica; font-size: 12px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1132) scale(1,-1)">Goal: move every farm reading to a trusted Hub and keep it until stored.</text>
+			<text x="24" y="547.1612903225806" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1094) scale(1,-1)">Legend: boxes = tables; lines = foreign keys; 1 / 0..* / 1..* = cardinalities.</text>
+			<g transform=" matrix(1,0,0,1,24,24)">
+				<g transform=" matrix(1.445161,0,0,1.445161,0,0)">
+					<g transform=" matrix(0.75,0,0,-0.75,0,341.25)">
+						<rect x="0.0" y="0.0" width="620.0" height="455.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: nonzero;"/>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="12.0" y="-20.0" style="font-family: Helvetica-Bold; font-size: 14.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-40) scale(1,-1)">Figure 1. C5 Hub: relational data model</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="12.0" y="-39.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-78) scale(1,-1)">Target D1 schema. PK = primary key; FK = foreign key.</text>
+						</g>
+						<path d="M 257,99 L 362,99 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.5;"/>
+						<path d="M 130,152 L 130,232 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.5;"/>
+						<path d="M 485,152 L 485,232 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.5;"/>
+						<path d="M 257,328 L 362,328 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.5;"/>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="269.0" y="-88.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-176) scale(1,-1)">1</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="326.0" y="-88.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-176) scale(1,-1)">0..*</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="146.0" y="-173.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-346) scale(1,-1)">1</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="146.0" y="-218.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-436) scale(1,-1)">0..*</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="501.0" y="-173.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-346) scale(1,-1)">1</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="501.0" y="-218.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-436) scale(1,-1)">0..*</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="269.0" y="-317.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-634) scale(1,-1)">1</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="324.0" y="-317.0" style="font-family: Helvetica; font-size: 12.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-634) scale(1,-1)">1..*</text>
+						</g>
+						<rect x="12.0" y="57.0" width="245.0" height="95.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: nonzero;"/>
+						<rect x="362.0" y="57.0" width="245.0" height="95.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: nonzero;"/>
+						<rect x="12.0" y="232.0" width="245.0" height="195.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: nonzero;"/>
+						<rect x="362.0" y="232.0" width="245.0" height="195.0" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: nonzero;"/>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-79.0" style="font-family: Helvetica-Bold; font-size: 13.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-158) scale(1,-1)">Origin</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-102.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-204) scale(1,-1)">PK origin_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-123.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-246) scale(1,-1)">expected_sender: BLOB[16]</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-79.0" style="font-family: Helvetica-Bold; font-size: 13.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-158) scale(1,-1)">Sensor</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-102.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-204) scale(1,-1)">PK, FK origin_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-123.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-246) scale(1,-1)">PK sensor_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-254.0" style="font-family: Helvetica-Bold; font-size: 13.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-508) scale(1,-1)">Envelope</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-277.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-554) scale(1,-1)">PK, FK origin_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-297.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-594) scale(1,-1)">PK message_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-317.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-634) scale(1,-1)">envelope_version: INTEGER</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-337.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-674) scale(1,-1)">collected_at_ms: INTEGER</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-357.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-714) scale(1,-1)">received_at_ms: INTEGER</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-377.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-754) scale(1,-1)">authenticated_sender: BLOB[16]</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="26.0" y="-397.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-794) scale(1,-1)">envelope_bytes: BLOB</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-254.0" style="font-family: Helvetica-Bold; font-size: 13.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-508) scale(1,-1)">Reading</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-277.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-554) scale(1,-1)">PK, FK origin_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-297.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-594) scale(1,-1)">PK, FK message_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-317.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-634) scale(1,-1)">PK, FK sensor_id: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-337.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-674) scale(1,-1)">encoding: TEXT</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-357.0" style="font-family: Helvetica; font-size: 11.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-714) scale(1,-1)">payload: BLOB</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-385.0" style="font-family: Helvetica; font-size: 10.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-770) scale(1,-1)">FK (origin_id, message_id): Envelope</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="376.0" y="-403.0" style="font-family: Helvetica; font-size: 10.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-806) scale(1,-1)">FK (origin_id, sensor_id): Sensor</text>
+						</g>
+						<g transform=" matrix(1,0,0,-1,0,0)">
+							<text x="12.0" y="-447.0" style="font-family: Helvetica; font-size: 10.0px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-894) scale(1,-1)">A2 enforces one or more Readings per Envelope in one transaction. Lines show relationships, not message flow.</text>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

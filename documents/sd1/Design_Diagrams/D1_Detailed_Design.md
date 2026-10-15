@@ -1,6 +1,8 @@
 # Pulse - Detailed System Design (D1)
 
-Assignment 6 - Detailed System Design, Part 1 (Design D1)
+Assignment 6 - Detailed System Design, Part 1 (D1)
+
+Part of the Assignment 4 design-diagram collection. D2 (Assignment 7) updates the capacity, retry scheduling, carrier limits, and failure handling below.
 
 ## 1. Header, scope, and conventions
 
@@ -32,13 +34,13 @@ The project title, goal, component IDs, and reading key stay the same as D0 [P1]
 
 The queue stays in memory in D1. Outage tests keep both Nodes running. Recovery after a Node restart depends on the durable queue design in D2. A local acceptance response confirms memory admission. It does not confirm storage at the Hub.
 
-<!-- pagebreak -->
+
 
 ## 2. Data model, the D1 diagram
 
 Figure 1 details C5. All four tables use SQLite on the Hub host.
 
-![Figure 1: Hub data model](D1_Data_Model.png)
+![Figure 1: Hub data model](D1_Hub_Data_Model.png)
 
 ### Structural decisions
 
@@ -51,7 +53,7 @@ Figure 1 details C5. All four tables use SQLite on the Hub host.
 
 An Origin represents a configured device name. Its expected sender hash binds that name to one identity. The Node trust table remains the authority. The Hub imports the same binding before it accepts remote data. One identity can own several Origin names. Key changes require a controlled configuration update; D1 does not permit two active keys for one Origin.
 
-<!-- pagebreak -->
+
 
 ### Key attributes, constraints, and indexes
 
@@ -72,15 +74,15 @@ All fields are required. `collected_at_ms = 0` means the sensor time is unknown.
 | Envelope `(origin_id, collected_at_ms, message_id)` | Read a device's time range without a full scan. The final field resolves equal times. US-01. |
 | Reading `(origin_id, sensor_id, message_id)` | Fetch sensor history and check references before sensor removal. US-04. |
 
-Our planning period is 30 days. The Hub retains each Envelope and its Readings for at least 3,600 seconds after receipt. It retains duplicate keys throughout the retry period. D2 defines removal and backup rules. SQLite uses `foreign_keys=ON`, `journal_mode=WAL`, `synchronous=FULL`, and a 5,000 ms busy timeout. FULL adds a disk sync at each commit in WAL mode [W1].
+Our planning period is 30 days. The Hub retains each Envelope and its Readings for at least 3,600 seconds after receipt. It retains duplicate keys throughout the retry period. D2 defines retention and disk monitoring. SQLite uses `foreign_keys=ON`, `journal_mode=WAL`, `synchronous=FULL`, and a 5,000 ms busy timeout. FULL adds a disk sync at each commit in WAL mode [W1].
 
 ### C3 state model
 
-`Publication` holds an immutable envelope and one unique `message_id: string` for the Node. `Delivery` holds one destination's state. One Publication has `1..*` Deliveries; each Delivery has exactly one Publication. The Delivery key is `(message_id, destination)`. Its fields are `expected_peer: bytes[16]`, `ack: AckMode`, `attempts: uint32`, `accepted_at: Instant`, `deadline: Instant`, `next_attempt: Instant`, `wrapper: bytes`, and `notify: set<uint64>`. `Instant` is a monotonic local time and has no wire format.
+`Publication` holds an immutable envelope and one unique `message_id: string` for the Node. `Delivery` holds one destination's state. One Publication has `1..*` Deliveries; each Delivery has exactly one Publication. The Delivery key is `(message_id, destination)`. Its fields are `expected_peer: bytes[16]`, `ack: AckMode`, `attempts: uint32`, `accepted_at: Instant`, `deadline: Instant`, `next_attempt: Instant`, `wrapper: bytes`, and `notify: set<uint64>`. Retries use a monotonic clock so a system-clock adjustment does not move their deadline.
 
 The Node uses a hash map for Deliveries and one queue for new work. Capacity includes queued and waiting reliable Deliveries. The field limit is 128 Deliveries. Best-effort traffic uses a separate 64-item queue. A full reliable queue rejects new work. A full best-effort queue removes its oldest item and increases `dropped`. Durable queue storage remains part of D2.
 
-<!-- pagebreak -->
+
 
 ## 3. Core algorithms
 
@@ -108,7 +110,7 @@ Admission and receipt lookup take expected `O(1)` plus `O(B)` encoding and signa
 
 **5. Edge cases.** An empty queue sends nothing. Equal retry times each get one send. Their order does not affect storage. Repeated receipts after completion do nothing. A wrong peer, bad signature, or unknown message does not remove data. Full capacity returns `QUEUE_FULL` without removal. At exactly the deadline, expiry wins. With several services on one peer, each destination uses a distinct message ID because v1 receipts omit destination. Node restart loses memory state; persistent storage remains part of D2.
 
-<!-- pagebreak -->
+
 
 ### A2. Check and commit a complete envelope once
 
@@ -122,7 +124,7 @@ The Hub encodes the parsed envelope with the pinned Java Protobuf codec. It stor
 
 For a new key, the Hub inserts one Envelope and all its Readings. It commits the transaction, returns `STORED`, and sends the receipt. A failed commit rolls back all new rows. A failed receipt send leaves committed rows unchanged. The next matching retry returns `DUPLICATE` and sends the receipt again. The PK check inside the transaction handles concurrent writers. The transaction reports data conflicts rather than ignoring them.
 
-Let S be samples, B be envelope bytes, R be stored Readings, and E be stored Envelopes. Checks take `O(B + S)` with a set for sensor IDs. Indexed inserts take `O(S log R + log E)`. Memory takes `O(B + S)`. Disk sync adds storage latency; this formula does not predict elapsed time.
+Let S be samples, B be envelope bytes, R be stored Readings, and E be stored Envelopes. Checks take `O(B + S)` with a set for sensor IDs. Indexed inserts take `O(S log R + log E)`. Memory takes `O(B + S)`. Commit latency also depends on disk sync.
 
 | Planning size | Estimated work and effect |
 | --- | --- |
@@ -130,17 +132,17 @@ Let S be samples, B be envelope bytes, R be stored Readings, and E be stored Env
 | 100 times that load | 1,000 devices: 1,440,000 Readings/day and 43,200,000 in 30 days. Average intake is 16.67 envelopes/second. |
 | Index and disk estimate | `log2(R)` rises from about 19 to 26. A planning allowance of 1 KB per sample gives about 432 MB or 43.2 GB. |
 
-These are sizing assumptions, not measured throughput or known farm inventory. SQL B-trees use page fanout, so log2 values only compare growth. WAL files, backups, and free space add to the disk allowance. The 100-times case needs a host storage check and a commit benchmark. It does not establish that one LoRa channel carries that load.
+The estimates use 10 devices with one sensor each. Allow extra disk space for indexes and WAL. The larger case needs a storage and commit benchmark; radio capacity is a separate limit.
 
 **4. Why this algorithm.** A transaction prevents partial envelopes. A primary key and full content comparison give persistent duplicate checks. An in-memory set loses history after restart. A separate lookup followed by an unlocked insert races with another writer. A receipt before commit loses data after a crash. Generated Protobuf bytes avoid a custom hash or canonical JSON scheme.
 
 **5. Edge cases.** The Hub rejects empty samples, unknown encodings, empty sensor IDs, negative times, and repeated sensor IDs. Equal times remain separate messages. Queries order results by time, then message ID. Unknown collection time stays zero. An identical retry returns `DUPLICATE`. Changed payload under the same key returns a conflict. Unapproved remote identities never reach storage. Disk full, busy timeout, and a failed commit send no receipt. A crash before commit leaves no new envelope; a crash after commit permits a matching retry.
 
-<!-- pagebreak -->
+
 
 ## 4. Build-versus-reuse decisions
 
-The selected versions match our current project dependencies. `Cargo.lock` pins Rust dependencies. `gradle/libs.versions.toml` pins Java dependencies. Project code uses the Pulse proprietary course license [P3]. We use upstream license files and documentation for these decisions. This table covers the significant parts of C3 and C5.
+These choices use the D1 dependency snapshot [P3]. Rust versions are pinned in Cargo.lock and Java versions in gradle/libs.versions.toml. We build the delivery rules and reuse libraries for codecs, storage, and cryptography.
 
 | Piece | Build or reuse; license | Maturity, performance, and fit |
 | --- | --- | --- |
@@ -153,13 +155,11 @@ The selected versions match our current project dependencies. `Cargo.lock` pins 
 | Signature and verification | Reuse ed25519-dalek 3.0.0; BSD-3-Clause [W5] | Established library family; version 3 matches the SDK. The library signs exact bytes. D2 covers board measurements. |
 | Network stack | Reuse reticulum-sdk 2.3.4; MIT [W6] | Small upstream project; direct LoRa support is experimental. Our dependency pins this version. It provides paths and encryption. Hardware and Python interoperation remain required checks. |
 | Database engine and driver | Reuse SQLite, public domain; Xerial 3.49.1.0, Apache-2.0 and BSD-2-Clause notices [W7, W8] | Mature embedded database; maintained JDBC driver. One writer fits initial intake. Host disk speed determines FULL commit latency. |
-| Message IDs | Reuse uuid 1.26.0; MIT OR Apache-2.0 [W9] | Established UUID parser and generator. Version 4 avoids a shared ID service. Changed data under the same ID causes a conflict. |
 | JSON decoding | Reuse Gson 2.13.1; Apache-2.0 [W10] | Maintenance mode is sufficient for JSON parsing. The decoder uses strict parsing and explicit field checks. Adding it to runtime is a D1 target; it is a test dependency today. |
-| Time and scheduling | Reuse Rust `Instant`, Java `System.currentTimeMillis`, and library timers; Rust MIT/Apache-2.0, OpenJDK GPL-2.0 with Classpath Exception [W11, W12] | Standard APIs avoid a custom date parser. Monotonic time controls retries. Epoch milliseconds label readings. No textual date input is needed. |
 
-Our distribution retains the required dependency licenses and notices. The Pulse license does not replace dependency licenses. D1 selects software already present in the project where possible. A small upstream project has less support than SQLite or Protobuf; the SDK version pin and interoperation checks address that risk.
+We retain dependency license notices. The smaller Reticulum SDK needs particular attention to version pinning and interoperability tests.
 
-<!-- pagebreak -->
+
 
 ## 5. API contract
 
@@ -183,7 +183,7 @@ I5 carries `TransportPacket{payload:bytes, sender_identity:bytes[16], signature:
 
 The 383-byte cap comes from the pinned SDK's encrypted single-packet limit. It includes the whole Pulse wrapper. A 1 MiB local frame does not imply a 1 MiB radio packet. Oversize remote data returns `INVALID_MESSAGE`; D2 can define fragmentation if required.
 
-<!-- pagebreak -->
+
 
 ### Key operations on C3
 
@@ -194,7 +194,7 @@ The 383-byte cap comes from the pinned SDK's encrypted single-packet limit. It i
 | `ACK` / I6 | Required `message_id:string` under the UUID rule; required `status:DeliveryStatus=STORED`. Optional `detail:string=""`, 0-256 UTF-8 bytes. The calling connection must own the service's pending storage delivery. | Success returns Response and causes a signed remote storage receipt. `INVALID_MESSAGE`: unknown waiter, non-STORED status, or bad fields. `UNAUTHORIZED`: another connection attempts the receipt. A lost remote receipt triggers a new delivery; its new waiter permits another ACK. |
 | `HEALTH` / I3 or I6 | Required empty `HealthRequest{}`; no parameters. Wrapper version and request ID rules still apply. | Success returns Response with HealthStatus. `INVALID_MESSAGE`: version or operation/body mismatch. A closed connection yields a client I/O error. |
 
-These validation and ownership rules are target D1 rules. Current code does not enforce every name limit, local origin binding, or ACK connection check. `ACK` currently accepts other statuses. These checks form part of our D1 design [P3]. Loopback restricts network access; it does not authenticate every local process. The first deployment uses one trusted service account and protected configuration files.
+The implementation snapshot [P3] still needs the name limits, origin binding, and ACK ownership checks described here. Loopback restricts network access; it does not authenticate every local process. The first deployment uses one trusted service account and protected configuration files.
 
 ### Key method inside C5
 
@@ -209,7 +209,7 @@ These validation and ownership rules are target D1 rules. Current code does not 
 
 The current Java method returns Outcome and throws SQLException. The D1 method adds the listed checks and internal errors. These errors stay inside C5; they do not add unassigned wire enum values.
 
-<!-- pagebreak -->
+
 
 ### Events, status binding, and error recovery
 
@@ -217,8 +217,8 @@ The current Java method returns Outcome and throws SQLException. The D1 method a
 | --- | --- |
 | `DeliveryEvent` / I6 | `{destination:string, message:PulseEnvelope, authenticated_sender:bytes}`. Destination is the local service hash. Sender is exactly 16 bytes for remote data or empty for local data. C5 accepts an empty sender only for a configured local origin. |
 | `StatusUpdate` / I5 | `{message_id:string, status:DeliveryStatus, detail:string}`. Detail has at most 256 UTF-8 bytes. A signed expected peer supplies it. Completion requires a matching peer and pending service. |
-| `StatusEvent` / I3 | `{message_id:string, status:DeliveryStatus, detail:string}`. `RECEIVED=1`, `STORED=2`, `EXPIRED=3`, `FAILED=4`. Zero is invalid. Status has no numeric unit. |
-| `HealthStatus` | `{inventory_id:string, boot_id:string, uptime_seconds:uint64, component:string, queue_depth:uint32, dropped:uint64, last_contact_ms:int64}`. Inventory is Name; boot ID is UUID v4; component is `node`. Uptime counts seconds. Queue depth counts pending Deliveries, including waiting items. Dropped counts best-effort removals since boot. Contact is epoch milliseconds, zero before any verified peer contact. |
+| `StatusEvent` / I3 | `{message_id:string, status:DeliveryStatus, detail:string}`. `RECEIVED=1`, `STORED=2`, `EXPIRED=3`, `FAILED=4`. Zero is invalid. |
+| `HealthStatus` | `{inventory_id:string, boot_id:string, uptime_seconds:uint64, component:string, queue_depth:uint32, dropped:uint64, last_contact_ms:int64}`. Inventory is Name; boot ID is UUID v4; component is `node`. Queue depth counts pending Deliveries, including waiting items. Dropped counts best-effort removals since boot. Contact is epoch milliseconds, zero before any verified peer contact. |
 
 For local deliveries, C5 resolves an empty sender to the configured local identity before storage. The schema always stores a 16-byte identity hash. Collection and receipt times remain distinct. Status events omit destination in v1. Therefore, the Edge assigns distinct IDs to different destinations when one peer provides several services. A later schema can add explicit destination binding.
 
@@ -234,6 +234,8 @@ For local deliveries, C5 resolves an empty sender to the configured local identi
 A valid `STORED` is the only success that proves Hub storage for `ACK_STORED`. Expiry means storage is unconfirmed; it does not prove that the Hub has no copy. A missing receipt after commit can produce this result. The Node reports the result so the technician can investigate.
 
 **Versioning.** `protocol_version` versions local RPC; `envelope_version` versions data; both start at 1. Compatible changes add optional Protobuf fields and preserve existing field numbers. Changing a field type, required rule, receipt meaning, or supported identity width breaks the contract. Such a change requires a version increase and coordinated peer upgrade. D0's identity-width change needs no migration of deployed farm devices because D0 is a design baseline. Future deployed v1 changes require a migration. A new sensor with an installed decoder does not require a new envelope version.
+
+
 
 <!-- pagebreak -->
 
@@ -291,40 +293,37 @@ After the Hub commits, the field Node sends this event to the Edge.
 
 An admission failure instead returns `response:{ok:false,error:{code:QUEUE_FULL,message:"reliable outbound queue full"}}` under request ID 17. Acceptance and `STORED` remain separate results.
 
-<!-- pagebreak -->
+
 
 ## 6. Technology choices with justification
 
 ### Database: SQLite through Xerial JDBC
 
-Yatharth uses SQL and PostgreSQL in his recorded work; Sujal uses SQL and database checks [P4]. Jacob has Java experience. SQLite uses public-domain terms; Xerial supplies Apache-2.0 and BSD notices [W7, W8]. SQLite has detailed transaction documentation, and Xerial maintains releases for SQLite changes. One writer, primary-key lookups, and WAL suit the assumed 0.167 envelopes/second; the 100-times case depends on measured FULL commit performance. The database runs on the local Hub without a server subscription. We pass over PostgreSQL because a separate database service adds setup for the initial farm. PostgreSQL remains an option if measured writer or storage limits require it.
+We chose SQLite because the Hub needs one local writer, transactions, and duplicate checks without another service to install. WAL supports concurrent reads. Xerial provides the Java driver [W1, W7, W8]. PostgreSQL would add setup and administration that the initial workload does not need.
 
 ### Backend: Rust Node with Tokio; Java 21 Hub
 
-Jacob has production experience with Rust, C++, Java, and Linux. Yatharth has experience with Python, TCP/IP, and SQL; Java Hub ownership adds a learning task [P4]. Rust uses MIT/Apache-2.0, Tokio uses MIT, and OpenJDK uses GPL-2.0 with the Classpath Exception [W2, W11, W12]. Rust, Tokio, and OpenJDK have public documentation and maintained toolchains. Rust suits bounded packet state; a small Java consumer can validate and commit the initial intake. The JVM stays on the Hub, not the ESP32. Both programs run on existing Linux hosts without a paid backend service. We pass over a Spring service because C5 needs a local consumer, not a web server. We also pass over a Python Node to preserve Jacob's Rust work and the shared Rust libraries.
+Rust and Tokio provide bounded queues, timers, and asynchronous I/O for the Node. Java 21 gives the Hub a straightforward JDBC storage path. The JVM runs only on the Hub host. We kept these existing project choices rather than adding a web framework or rewriting the Node in another language.
 
-### Front end: command-line tools and logs for D1
+### Interface: command-line tools and logs
 
-Jacob has Linux and shell experience. Sujal and Yatharth have React experience if a later dashboard needs a web interface [P4]. Pulse tools use the course license; the selected Rust/Java libraries keep their own licenses. Standard terminal tools and logging APIs have established documentation. Text output adds little work to the delivery path and needs no browser on field hardware. The technician uses the local host; no web hosting cost applies. We defer a React dashboard because US-01 to US-05 require delivery, configuration, and trust checks rather than a screen. D2 can define a separate dashboard without placing it inside the transport layer.
+Technicians configure devices and inspect delivery faults through commands, logs, and HEALTH. The user stories do not require a dashboard, so we are not building one.
 
-### Messaging and hardware: Protobuf, Reticulum, and ESP32-S3 target
+### Messaging and hardware: Protobuf, Reticulum, and ESP32-S3
 
-Jacob's Rust and networking work supports the Node; Yatharth's industrial TCP/IP work supports bench tests. Sujal owns the sensor and hardware checks [P1, P4]. prost uses Apache-2.0, protobuf-java uses BSD-3-Clause, and reticulum-sdk uses MIT [W3-W6]. Hardware has a purchase cost, not a software license. Protobuf has broad language support; the SDK has a smaller upstream group and experimental direct LoRa support. Compact bytes and a 383-byte wrapper cap suit low-rate messages; radio settings, RAM, and energy need board measurements. We use our existing ESP32-S3 boards and LoRa board. Our first tests use Reticulum over TCP. We pass over MQTT with a central IP broker because it adds an IP service to the field path. ESP32 firmware and any RNode fallback remain D2 choices, not proven D1 results.
-
-<!-- pagebreak -->
+Protobuf defines the shared Rust/Java messages. Reticulum provides the carrier layer, starting over TCP before board testing. We use the existing ESP32-S3 and LoRa hardware. We chose this path over a central MQTT broker because field delivery must work without a separate IP service. D2 defines the LoRa packet limits and board recovery design.
 
 ### Hosting: local Linux host with systemd
 
-Jacob has Linux deployment experience; Yatharth has database and industrial host experience [P4]. Linux uses GPL-2.0, and systemd uses LGPL-2.1-or-later for its main code [W13, W14]. Pulse runs as separate programs under these host tools. Linux and systemd have established operational documentation. Independent processes restart separately; local SQLite avoids network delay during commits. Restart still loses the current Node's in-memory queue. We use an existing laptop or Linux host for the prototype, with no cloud fee. A farm host needs reliable power and disk space. We pass over cloud-only hosting because farm internet loss must not stop local collection. The course constraints state $200; an advisor record states $1,000 [P5, P6]. D1 uses the smaller allowance and requires no new purchase.
+The prototype runs on an existing Linux host. systemd restarts the Node, Edge, and Hub independently. A local database keeps farm internet access out of the collection path. We use the $200 course budget and existing equipment [P4]; any additional purchase must fit that cap.
 
 ### Project sources
 
-- **P1:** `documents/sd1/assignments/assignment-5/D0_High_Level_Design.md`, with its original figure sources. D0 provides the component and interface baseline.
+- **P1:** `documents/sd1/Design_Diagrams/D0_High_Level_Design.md`, with its original figure sources. D0 provides the component and interface baseline.
 - **P2:** `User_Stories.md`: US-01 to US-05, UC-01, and AC-01.1 to AC-01.3.
 - **P3:** The sibling `monorepo`, commit `c845c4e`, including: `node/src/buffer.rs`, `node/src/node.rs`, `node/src/rpc.rs`, `hub/.../ReadingStore.java`, `HubMain.java`, `DecoderRegistry.java`, and `common/protocol/proto/pulse/v1/*.proto`. Dependency sources: `Cargo.toml`, `Cargo.lock`, `gradle/libs.versions.toml`, `MODULE.bazel`, and `LICENSE`.
-- **P4:** The three biographies in `documents/sd1/assignments/assignment-1/`. Team experience and skills.
-- **P5:** `documents/sd1/assignments/assignment-3/Constraints_Essay.md`: $200 course budget and existing board inventory.
-- **P6:** `docs/meetings/2026-09-11-first-advisor-meeting.md`: desktop-first plan, board tests, and the separate $1,000 allowance.
+- **P4:** `documents/sd1/assignments/assignment-3/Constraints_Essay.md`: $200 course budget and existing board inventory.
+- **P5:** `docs/meetings/2026-09-11-first-advisor-meeting.md`: desktop-first plan and board tests.
 
 ### External sources and license checks
 
@@ -340,9 +339,4 @@ Dependency documentation and license sources follow.
 | W6 | [Reticulum SDK](https://github.com/ReticulaLabs/reticulum-sdk): MIT terms and experimental direct LoRa support. Pinned 2.3.4 packet source defines the 383-byte limit. |
 | W7 | [SQLite copyright](https://www.sqlite.org/copyright.html): public-domain terms. |
 | W8 | [Xerial JDBC](https://github.com/xerial/sqlite-jdbc): maintenance, supported hosts, and license files. |
-| W9 | [uuid](https://github.com/uuid-rs/uuid): UUID generation and MIT/Apache-2.0 choice. |
 | W10 | [Gson](https://github.com/google/gson): maintenance mode and Apache-2.0 license. |
-| W11 | [Rust licenses](https://rust-lang.org/policies/licenses/): MIT/Apache-2.0 terms. |
-| W12 | [OpenJDK license](https://github.com/openjdk/jdk/blob/master/LICENSE): GPL-2.0 with the Classpath Exception. |
-| W13 | [Linux license](https://www.kernel.org/doc/html/latest/process/license-rules.html): GPL-2.0 license rule. |
-| W14 | [systemd license](https://github.com/systemd/systemd/blob/main/README): main-code LGPL-2.1-or-later rule and exceptions. |

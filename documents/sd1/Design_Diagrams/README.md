@@ -1,47 +1,26 @@
 # Pulse design diagrams
 
-The D1 submission file is `D1_Detailed_Design.pdf`.
-The document includes all six assignment parts and all three team names.
-It details the Node (C3) and Hub (C5).
+The Canvas upload is [Assignment_4_Consolidated.pdf](Assignment_4_Consolidated.pdf). It contains User Stories, D0, D1, D2, and the peer-review notes in that order. Each team member submits the full PDF separately.
 
-## Files
+Assignment 4 names the complete design-diagram collection. D1 is the Assignment 6 work; D2 is the Assignment 7 update. D0 keeps its original header.
 
-| File | Purpose |
-| --- | --- |
-| `D1_Detailed_Design.md` | Edit the document text. |
-| `D1_Data_Model.svg` | Edit the data model figure. |
-| `D1_Data_Model.png` | Use the figure export in Markdown. |
-| `D1_Hub_Schema.sql` | Read the proposed Hub schema. Do not apply it as a migration to an existing database. |
-| `build_d1.py` | Export the figure and PDF from the sources. |
-| `D0_*` | Compare the unchanged D0 baseline with D1. |
+## Sources
 
-The original D0 files remain in `../assignments/assignment-5/`.
-The copies here have the same bytes as those files.
+- `D1_Detailed_Design.md`: the earlier Node and Hub design, edited for clarity.
+- `D2_Detailed_Design.md`: completed component designs, error handling, traceability, and rationale.
+- `Peer_Review_Notes.md`: feedback from Street Smart and EpistemicRAG, our responses, and the two issues we raised about Street Smart.
+- `D1_Hub_Schema.sql`: the proposed database schema; not a migration.
+- SVG/PNG files: editable diagrams and their Markdown images. The original D1 model is unchanged; `D1_Hub_Data_Model` adds the figure heading and legend.
+- `../../../User_Stories.md`: the stories and acceptance criteria, including the clarified delivery deadline.
 
-## Export
+## Rebuild
 
-Use Python 3 with `reportlab`, `pypdfium2`, and `Pillow`.
-Run this command from this folder:
+Install Python packages `reportlab`, `pypdf`, `pypdfium2`, and `svglib`, then run:
 
 ```bash
-python3 build_d1.py
+python3 build_d2.py
 ```
 
-The script creates `D1_Detailed_Design.pdf` and `D1_Data_Model.png`.
-It keeps the SVG figure as vector data inside the PDF.
-The figure renderer supports the rectangles, lines, and text in the supplied SVG.
+This rebuilds User Stories at the repository root and the D1, D2, and consolidated PDFs in this folder. Review notes appear once, at the end of D2. Use this exporter for the current package; `build_d1.py` is the earlier D1-only exporter.
 
-## Design status
-
-D1 defines target behavior and marks changes from the current code.
-The project code remains unchanged.
-The design uses a 3,600-second expiry and 30-second retries.
-Its reliable queue stays in memory until D2 defines persistent storage.
-The document states planning sizes and the conflicting budget records.
-It does not claim measured farm capacity or completed hardware tests.
-
-## Submission
-
-Submit the complete PDF separately for each team member.
-Keep the PDF, text source, figure source, and export script in the team repository.
-The course site submission remains a team action.
+The original D0 files remain unchanged, including the copies under `../assignments/assignment-5/`.

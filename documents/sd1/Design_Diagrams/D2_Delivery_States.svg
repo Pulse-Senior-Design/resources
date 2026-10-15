@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="720" height="900" preserveAspectRatio="xMinYMin meet" viewBox="0 0 720 900" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="720" height="900"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-900)" style="clip-path: url(#clip)">
+		<g transform="">
+			<text x="24" y="875" style="font-family: Helvetica-Bold; font-size: 18px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1750) scale(1,-1)">Pulse | Figure 3. Durable Delivery and paced sending</text>
+			<text x="24" y="853" style="font-family: Helvetica; font-size: 12px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1706) scale(1,-1)">Goal: move every farm reading to a trusted Hub and keep it until stored.</text>
+			<text x="24" y="834" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1668) scale(1,-1)">Legend: boxes = actions/states; solid arrows = normal; red dashed = failure.</text>
+			<rect x="30" y="715" width="330" height="65" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(93%,94%,95%); fill-rule: evenodd;"/>
+			<text x="42" y="759" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1518) scale(1,-1)">VALIDATING - rate-sized capacity</text>
+			<text x="42" y="741" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1482) scale(1,-1)">Check route, profile size, policy v2</text>
+			<rect x="30" y="605" width="330" height="70" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="42" y="654" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1308) scale(1,-1)">PERSISTING - not accepted yet</text>
+			<text x="42" y="636" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1272) scale(1,-1)">Write, sync, rename, directory sync</text>
+			<text x="42" y="618" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1236) scale(1,-1)">Then return Response.ok</text>
+			<rect x="30" y="470" width="330" height="85" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="42" y="534" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1068) scale(1,-1)">PENDING - durable and eligible</text>
+			<text x="42" y="516" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1032) scale(1,-1)">Earliest deadline, tie round-robin</text>
+			<text x="42" y="498" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,996) scale(1,-1)">After send: retry no sooner than 30 s</text>
+			<text x="42" y="480" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,960) scale(1,-1)">Recovery retains original deadline</text>
+			<rect x="30" y="330" width="330" height="85" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="42" y="394" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,788) scale(1,-1)">AIRTIME GATE - per physical radio</text>
+			<text x="42" y="376" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,752) scale(1,-1)">One transmission at a time</text>
+			<text x="42" y="358" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,716) scale(1,-1)">Gap &gt;=1 s after end + profile rules</text>
+			<text x="42" y="340" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,680) scale(1,-1)">Recheck expiry immediately first</text>
+			<rect x="30" y="195" width="330" height="75" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="42" y="249" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,498) scale(1,-1)">CLEANUP - final receipt or expiry</text>
+			<text x="42" y="231" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,462) scale(1,-1)">STORED success / FAILED rejection</text>
+			<text x="42" y="213" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,426) scale(1,-1)">Sync deletion; EXPIRED on deadline</text>
+			<rect x="30" y="70" width="330" height="65" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(93%,94%,95%); fill-rule: evenodd;"/>
+			<text x="42" y="114" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,228) scale(1,-1)">TERMINAL - release capacity</text>
+			<text x="42" y="96" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,192) scale(1,-1)">Log outcome and notify subscribers</text>
+			<path d="M 195,715 L 195,675 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="195 675, 198.0448 681.3031, 191.9552 681.3031" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="205" y="690" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1380) scale(1,-1)">valid</text>
+			<path d="M 195,605 L 195,555 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="195 555, 198.0448 561.3031, 191.9552 561.3031" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="205" y="578" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1156) scale(1,-1)">durable</text>
+			<path d="M 195,470 L 195,415 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="195 415, 198.0448 421.3031, 191.9552 421.3031" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="205" y="438" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,876) scale(1,-1)">eligible</text>
+			<path d="M 195,330 L 195,270 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="195 270, 198.0448 276.3031, 191.9552 276.3031" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="47" y="295" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,590) scale(1,-1)">final receipt / expiry</text>
+			<path d="M 195,195 L 195,135 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="195 135, 198.0448 141.3031, 191.9552 141.3031" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="205" y="158" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,316) scale(1,-1)">cleanup succeeds</text>
+			<rect x="440" y="715" width="255" height="65" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(93%,94%,95%); fill-rule: evenodd;"/>
+			<text x="452" y="759" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1518) scale(1,-1)">REJECTED - no acceptance</text>
+			<text x="452" y="741" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1482) scale(1,-1)">Bad request / capacity / size</text>
+			<path d="M 360,747 L 440,747 Z" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1.3; stroke-dasharray: 5, 4;"/>
+			<polygon points="440 747, 433.6969 750.0448, 433.6969 743.9552" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1; fill: rgb(62%,14%,16%); fill-rule: evenodd;"/>
+			<text x="366" y="765" style="font-family: Helvetica; font-size: 11px;fill: rgb(62%,14%,16%); stroke:none;" transform="translate(0,1530) scale(1,-1)">EC-12/20</text>
+			<rect x="440" y="605" width="255" height="70" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(93%,94%,95%); fill-rule: evenodd;"/>
+			<text x="452" y="654" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1308) scale(1,-1)">CLOCK / STORAGE UNAVAILABLE</text>
+			<text x="452" y="636" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1272) scale(1,-1)">RTC or persistence fault</text>
+			<text x="452" y="618" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1236) scale(1,-1)">EC-54 / EC-53</text>
+			<path d="M 360,640 L 440,640 Z" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1.3; stroke-dasharray: 5, 4;"/>
+			<polygon points="440 640, 433.6969 643.0448, 433.6969 636.9552" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1; fill: rgb(62%,14%,16%); fill-rule: evenodd;"/>
+			<text x="366" y="658" style="font-family: Helvetica; font-size: 11px;fill: rgb(62%,14%,16%); stroke:none;" transform="translate(0,1316) scale(1,-1)">cannot admit</text>
+			<rect x="440" y="470" width="255" height="85" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="452" y="534" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1068) scale(1,-1)">RECOVERY - after restart</text>
+			<text x="452" y="516" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1032) scale(1,-1)">Lock, validate, quarantine</text>
+			<text x="452" y="498" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,996) scale(1,-1)">RTC determines remaining life</text>
+			<text x="452" y="480" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,960) scale(1,-1)">Enqueue valid unexpired records</text>
+			<path d="M 440,510 L 360,510 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="360 510, 366.3031 506.9552, 366.3031 513.0448" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="377" y="527" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,1054) scale(1,-1)">resume</text>
+			<rect x="440" y="330" width="255" height="85" rx="5" ry="5" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.2; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<text x="452" y="394" style="font-family: Helvetica-Bold; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,788) scale(1,-1)">WAIT - serialized scheduler</text>
+			<text x="452" y="376" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,752) scale(1,-1)">Gate closed: keep waiting</text>
+			<text x="452" y="358" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,716) scale(1,-1)">Sent: await matching receipt</text>
+			<text x="452" y="340" style="font-family: Helvetica; font-size: 13.5px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,680) scale(1,-1)">No receipt: re-enter PENDING</text>
+			<path d="M 360,372 L 440,372 Z" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1.3; stroke-dasharray: 5, 4;"/>
+			<polygon points="440 372, 433.6969 375.0448, 433.6969 368.9552" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1; fill: rgb(62%,14%,16%); fill-rule: evenodd;"/>
+			<text x="380" y="390" style="font-family: Helvetica; font-size: 11px;fill: rgb(62%,14%,16%); stroke:none;" transform="translate(0,780) scale(1,-1)">EC-58</text>
+			<path d="M 565,415 L 565,450 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<path d="M 565,450 L 385,450 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<path d="M 385,450 L 385,489 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<path d="M 385,489 L 360,489 Z" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1.3;"/>
+			<polygon points="360 489, 366.3031 485.9552, 366.3031 492.0448" style="stroke: rgb(11%,16%,21%); stroke-linecap: butt; stroke-width: 1; fill: rgb(11%,16%,21%); fill-rule: evenodd;"/>
+			<text x="442" y="436" style="font-family: Helvetica; font-size: 11px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,872) scale(1,-1)">deferred / retry</text>
+			<path d="M 360,220 L 405,220 Z" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1.3; stroke-dasharray: 5, 4;"/>
+			<path d="M 405,220 L 405,245 Z" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1.3; stroke-dasharray: 5, 4;"/>
+			<path d="M 405,245 L 360,245 Z" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1.3; stroke-dasharray: 5, 4;"/>
+			<polygon points="360 245, 366.3031 241.9552, 366.3031 248.0448" style="stroke: rgb(62%,14%,16%); stroke-linecap: butt; stroke-width: 1; fill: rgb(62%,14%,16%); fill-rule: evenodd;"/>
+			<text x="432" y="231" style="font-family: Helvetica; font-size: 11px;fill: rgb(62%,14%,16%); stroke:none;" transform="translate(0,462) scale(1,-1)">retry cleanup EC-53</text>
+			<text x="30" y="35" style="font-family: Helvetica; font-size: 12px;fill: rgb(11%,16%,21%); stroke:none;" transform="translate(0,70) scale(1,-1)">A terminal FAILED is signed by the expected peer; it never proves storage (EC-57/61).</text>
+		</g>
+	</g>
+</svg>

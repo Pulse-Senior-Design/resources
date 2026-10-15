@@ -21,7 +21,7 @@ The stories use the project records, architecture, current components, configura
 ### US-01 (primary)
 
 As a farm operations manager,
-I want field measurements to reach the farm hub after outages that end before the 3,600-second message expiry,
+I want queued measurements to reach the farm hub after a radio outage, with enough time to transmit, store, and acknowledge them before their 3,600-second deadline,
 so that I can detect irrigation problems without visiting each sensor site.
 
 ### US-02 (primary)
@@ -81,7 +81,7 @@ so that unapproved devices cannot add records to the farm data set.
 2. The system validates each configuration and registers the Hub destination.
 3. The field technician disconnects the field link before the next sample time.
 4. The Edge collects one sample. The field Node keeps the message in its reliable queue.
-5. The field technician restores the link before the message expires.
+5. The field technician restores the link with enough time for transmission, storage, and acknowledgement before the message expires.
 6. The field Node sends the queued message with its original message identifier.
 7. The hub Node checks the sender identity and gives the message to the Hub.
 8. The Hub validates the message and commits one database row.
@@ -153,7 +153,7 @@ A successful result identifies one unchanged configuration as valid for the sele
 #### AC-01.1 - Main Success Flow
 
 Given an approved field identity, an empty Hub database, and a field configuration that requests `STORED`,
-When the technician disconnects the link for one sample and restores it before the 3,600-second expiry,
+When the technician disconnects the link for one sample and restores it with enough time for transmission, storage, and acknowledgement before the 3,600-second expiry,
 Then the Hub contains exactly one row for the message identifier and the field queue contains zero copies after acknowledgement.
 
 #### AC-01.2 - Alternate Flow
@@ -187,4 +187,3 @@ Then the command output contains `sim-env` exactly once.
 Given a configuration that names `missing-driver` and a source file with a recorded hash,
 When the deployment engineer runs the Builder validation command,
 Then the command returns a nonzero status, names `missing-driver`, lists available drivers, and preserves the source file hash.
-
